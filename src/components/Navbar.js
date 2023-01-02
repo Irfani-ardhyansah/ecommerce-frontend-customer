@@ -4,9 +4,11 @@ import { MdShoppingCart, MdMessage, MdCategory, MdOutlineSearch } from "react-ic
 const Navbar = () => {
     return (
         <>
-            <nav class="navbar navbar-expand-lg navbar-light bg-light p-10">
-                <div class="container-fluid py-2">
-                    <a class="navbar-brand" href="#">Navbar</a>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light p-10" style={{position: 'sticky', top: 0, zIndex: 1}}>
+                <div class="container py-2">
+                    <a class="navbar-brand" href="#">
+                        <h3>Navbar</h3>
+                    </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>

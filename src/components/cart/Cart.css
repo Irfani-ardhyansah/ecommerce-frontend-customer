@@ -1,0 +1,62 @@
+.cart {
+    display: flex;
+    justify-content: start;
+    padding-top: 2vh;
+    flex-direction: row;
+    min-height: 100vh;
+}
+
+.cart .container {
+    width: auto;
+}
+
+.form-cart input {
+    margin-right: 1%;
+}
+
+.form-cart .label-all {
+    color: #a5a5a5;
+}
+
+.cart .container hr {
+    border: none; 
+    border-bottom: 4px solid gray;
+}
+
+.form-cart .product-img {
+    width: 7rem;
+    border-radius: 5px 5px 0 0;
+}
+
+.form-cart p {
+    margin-bottom: 0;
+}
+
+.form-cart a {
+    color: gray;
+    text-decoration: none;
+}
+
+.qty-control .form-qty-control {
+    outline: 0;
+    border: 4px solid rgb(177, 175, 175);
+    border-width: 0 0 2px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+input[type='number'] {
+    -moz-appearance:textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.cart .card-price {
+    width: 20rem;
+    margin-left: 60rem;
+    margin-top: 10vh;
+    position: fixed;
+}
