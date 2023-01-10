@@ -1,7 +1,15 @@
 import './Navbar.css'
 import { MdShoppingCart, MdMessage, MdCategory, MdOutlineSearch } from "react-icons/md";
+import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
+    const isAuthenticated = localStorage.getItem('dataLogin')
+    const dataLogin = JSON.parse(isAuthenticated)
+    let navigate = useNavigate();
+    const logout = () => {
+        localStorage.clear()
+        navigate('/')
+    }
     return (
         <>
             <nav class="navbar navbar-expand-lg navbar-light bg-light p-10" style={{position: 'sticky', top: 0, zIndex: 1}}>
@@ -45,6 +53,37 @@ const Navbar = () => {
                             </li>
                             <div class="v-hr me-2"></div>
                             {/* Login  */}
+                            {isAuthenticated ? 
+                            <>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">{dataLogin.user.detail.name}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" onClick={() => logout()}>Log out</a>
+                            </li>
+                            {/* <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Dropdown
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="#">Action</a></li>
+                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                </ul>
+                            </li> */}
+                            </> : 
+                            <>
+                                <li class="nav-item me-2">
+                                    <button class="btn btn-outline-secondary" type="submit"> 
+                                        Login
+                                    </button>
+                                </li>
+                                <li class="nav-item">
+                                    <button class="btn btn-secondary" type="submit"> 
+                                        Register
+                                    </button>
+                                </li>
+                            </>}
                             {/* <li class="nav-item">
                                 <a class="nav-link" href="#">Pricing</a>
                             </li>
@@ -59,7 +98,7 @@ const Navbar = () => {
                                 </ul>
                             </li> */}
                             {/* Not Login Yet */}
-                            <li class="nav-item me-2">
+                            {/* <li class="nav-item me-2">
                                 <button class="btn btn-outline-secondary" type="submit"> 
                                     Login
                                 </button>
@@ -68,7 +107,7 @@ const Navbar = () => {
                                 <button class="btn btn-secondary" type="submit"> 
                                     Register
                                 </button>
-                            </li>
+                            </li> */}
                         </ul>
                     </div>
                 </div>
