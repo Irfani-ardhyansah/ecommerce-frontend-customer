@@ -115,9 +115,17 @@ const Cart = () => {
                     </div>
                     <hr />
                 </div>
+                <div class="container">
+                </div>
                 <div class="container card-price">
                     <div class="card shadow-sm p-3 mb-5 bg-white rounded">
                         <h5>Ringkasan Belanja</h5>
+                        <div class="d-flex justify-content-between">
+                            <p>Total harga (0 Barang)</p>
+                            <p>Rp0</p>
+                        </div>  
+                        <hr style={{marginTop: '0'}} />
+                        <button class="btn btn-secondary">Beli</button>
                     </div>
                 </div>
             </div>

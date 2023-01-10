@@ -55,8 +55,8 @@ input::-webkit-inner-spin-button {
 }
 
 .cart .card-price {
-    width: 20rem;
-    margin-left: 60rem;
+    width: 23rem;
+    margin-left: 50rem;
     margin-top: 10vh;
     position: fixed;
 }
