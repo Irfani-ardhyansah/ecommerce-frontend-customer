@@ -26,9 +26,13 @@ const Login = () => {
             headers: config.headers,
         });
 
-        if(result.status == 200) {
-            localStorage.setItem('dataLogin', JSON.stringify(result.data.data));
-            navigate('/dashboard')
+        if(result.status == 200) { 
+            if(result.data.data.user.role == 'customer') {
+                localStorage.setItem('dataLogin', JSON.stringify(result.data.data));
+                navigate('/dashboard')
+            } else {
+                console.log('akun role bukan customer')
+            }
         }
     }
 

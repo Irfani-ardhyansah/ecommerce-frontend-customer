@@ -1,0 +1,54 @@
+.profile {
+    padding-top: 5vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #eaeaea;
+    min-height: 100vh;
+}
+
+.profileCard { 
+    background-color: whitesmoke;
+    width: 75%;
+    height: auto !important;
+}
+
+.profileBody {
+    padding-top: 6vh;
+    padding-right: 4%;
+    padding-left: 4%;
+    padding-bottom: 3vh;
+}
+
+.profileBody .row table tr > .profileForm {
+    display: flex;
+}
+
+.profileBody .row table tr > .profileHeaderBtn {
+    text-align: right;
+}
+
+.profileBody .row table tr > td > button {
+    padding: 0;
+    padding-left: 5px;
+    text-decoration: none;
+}
+
+.profileBody .row table tr > td > input {
+    width: 50%;
+}
+
+.profileBody .row table tr > td > select {
+    width: 50%;
+}
+
+.profileCardImg {
+    box-shadow: rgba(0, 0, 0, 0.35) 5px 0px 5px;
+}
+
+.profileCardImg p {
+    font-size: 12px;
+}
+
+.profileImg {
+    border-radius: 5px;
+}
