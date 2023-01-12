@@ -14,9 +14,9 @@ const Navbar = () => {
         <>
             <nav class="navbar navbar-expand-lg navbar-light bg-light p-10" style={{position: 'sticky', top: 0, zIndex: 1}}>
                 <div class="container py-2">
-                    <a class="navbar-brand" href="#">
+                    <Link to="/dashboard" class="navbar-brand" >
                         <h3>Navbar</h3>
-                    </a>
+                    </Link>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -56,7 +56,7 @@ const Navbar = () => {
                             {isAuthenticated ? 
                             <>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">{dataLogin.user.detail.name}</a>
+                                <Link to="/profile" class="nav-link" >{dataLogin.user.detail.name}</Link>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#" onClick={() => logout()}>Log out</a>
