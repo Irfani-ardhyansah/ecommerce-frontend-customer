@@ -42,9 +42,9 @@ const Navbar = () => {
                                 </ul>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <MdShoppingCart />
-                                </a>
+                                <Link to="/cart" class="nav-link" >
+                                    <MdShoppingCart />                                
+                                </Link>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link me-2" href="#">

@@ -8,25 +8,28 @@ const Register = () => {
     const config = {
         headers: { 'Content-Type': 'multipart/form-data' }
     }
-    let navigate = useNavigate();
+    let navigate = useNavigate()
 
     const sendData = async (e) => {
         const formData = new FormData()             
-        formData.append("name", e.name);
-        formData.append("address", e.address);
-        formData.append("phone", e.phone);
-        formData.append("email", e.email);
-        formData.append("password", e.password);
+        formData.append("name", e.name)
+        formData.append("address", e.address)
+        formData.append("phone", e.phone)
+        formData.append("email", e.email)
+        formData.append("password", e.password)
+        formData.append("birthday", e.birthday)
+        formData.append("gender", e.gender)
+
 
         const result = await axios({
             method: "POST",
             url: `${process.env.REACT_APP_DOMAIN}/api/register`,
             data: formData,
             headers: config.headers,
-        });
+        })
 
         if(result.data.status == 200) {
-            navigate('/');
+            navigate('/')
         }
     }
 
@@ -48,6 +51,20 @@ const Register = () => {
                                 <div class="col-lg-6">
                                     <label class="form-label">Name</label>
                                     <input type="text" class="form-control" placeholder="Name..." isInvalid={!!errors.name} {...register("name", { required: true })} />
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-lg-6">
+                                    <label class="form-label">Gender</label>
+                                    <select class="form-control" {...register("gender", { required : true })}>
+                                        <option selected>Select Gender</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="form-label">Date Of Birth</label>
+                                    <input type="date" class="form-control" {...register("birthday", { required: true })} /> 
                                 </div>
                             </div>
                             <div class="row mt-2">

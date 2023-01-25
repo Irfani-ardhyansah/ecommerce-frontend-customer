@@ -125,7 +125,7 @@ const Cart = () => {
                             <p>Rp0</p>
                         </div>  
                         <hr style={{marginTop: '0'}} />
-                        <button class="btn btn-secondary">Beli</button>
+                        <button class="btn btn-secondary*">Beli</button>
                     </div>
                 </div>
             </div>

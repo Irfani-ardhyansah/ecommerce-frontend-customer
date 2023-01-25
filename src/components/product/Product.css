@@ -19,6 +19,7 @@
 }
 
 .product-card {
+    display: inline-block !important;
     width: auto !important;
     border-radius: 10px;
     box-shadow: 0 3px 3px 0 #222;
