@@ -3,129 +3,93 @@ import Navbar from '../Navbar'
 import product_1 from '../../img/5.jpg'
 import { MdOutlineRemoveShoppingCart } from "react-icons/md";
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai";
+import { useState, useEffect, useRef } from "react"
+import axios from 'axios'
+import {priceSplitter} from '../../Helper'
 
 const Cart = () => {
+    const dataLogin                         = JSON.parse(localStorage.getItem('dataLogin'))
+    const config                            = {
+        headers: { Authorization: `Bearer ${dataLogin.token}`, 'Content-Type': 'multipart/form-data' }
+    }
+    const [cart, setCart]   = useState({})
+    
+    useEffect(() => {
+        getCart()
+    }, [])
+
+    const getCart = async () => {
+        const result = await axios.get(`${process.env.REACT_APP_DOMAIN}/api/cart`, config)
+        if(result.data.status == 200) {
+            setCart(result.data.data)
+        }
+    }
+
+    console.log('cart')
+    console.log(cart)
+
     return (
         <>
             <Navbar />
 
-            <div class="cart">
-                <div class="container">
+            <div className="cart">
+                <div className="container">
                     <h5>Keranjang</h5>
-                    <div class="form-cart">
+                    <div className="form-cart">
                         <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" />
-                        <label class="label-all">Pilih Semua</label>
+                        <label className="label-all">Pilih Semua</label>
                     </div>
                     <hr />
 
                     {/* product start */}
-                    <div class="form-cart d-flex">
-                        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" />
-                        <img src={product_1} class="product-img" />
-                        <div class="d-flex flex-column ms-2">
-                            <p>Product 1 ini</p>
-                            <div class="d-flex justify-content-between">
-                                <a href="#">
-                                    <MdOutlineRemoveShoppingCart />
-                                </a>
-                                <div class="qty-control d-flex justify-content-end">
-                                    <a href="#">
-                                        <AiOutlineMinusCircle />
-                                    </a>
-                                    <input type="number" class="form-qty-control" style={{width: '5%'}}/>
-                                    <a href="#">
-                                        <AiOutlinePlusCircle />
-                                    </a>
-                                </div>
-                            </div>
-                            <h5>Rp. 100.000</h5>
-                        </div>
-                    </div>
-                    <hr />
-
-                    <div class="form-cart d-flex">
-                        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" />
-                        <img src={product_1} class="product-img" />
-                        <div class="d-flex flex-column ms-2">
-                            <p>Product 1 ini</p>
-                            <div class="d-flex justify-content-between">
-                                <a href="#">
-                                    <MdOutlineRemoveShoppingCart />
-                                </a>
-                                <div class="qty-control d-flex justify-content-end">
-                                    <a href="#">
-                                        <AiOutlineMinusCircle />
-                                    </a>
-                                    <input type="number" class="form-qty-control" style={{width: '5%'}}/>
-                                    <a href="#">
-                                        <AiOutlinePlusCircle />
-                                    </a>
-                                </div>
-                            </div>
-                            <h5>Rp. 100.000</h5>
-                        </div>
-                    </div>
-                    <hr />
-
-                    <div class="form-cart d-flex">
-                        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" />
-                        <img src={product_1} class="product-img" />
-                        <div class="d-flex flex-column ms-2">
-                            <p>Product 1 ini</p>
-                            <div class="d-flex justify-content-between">
-                                <a href="#">
-                                    <MdOutlineRemoveShoppingCart />
-                                </a>
-                                <div class="qty-control d-flex justify-content-end">
-                                    <a href="#">
-                                        <AiOutlineMinusCircle />
-                                    </a>
-                                    <input type="number" class="form-qty-control" style={{width: '5%'}}/>
-                                    <a href="#">
-                                        <AiOutlinePlusCircle />
-                                    </a>
-                                </div>
-                            </div>
-                            <h5>Rp. 100.000</h5>
-                        </div>
-                    </div>
-                    <hr />
-
-                    <div class="form-cart d-flex">
-                        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" />
-                        <img src={product_1} class="product-img" />
-                        <div class="d-flex flex-column ms-2">
-                            <p>Product 1 ini</p>
-                            <div class="d-flex justify-content-between">
-                                <a href="#">
-                                    <MdOutlineRemoveShoppingCart />
-                                </a>
-                                <div class="qty-control d-flex justify-content-end">
-                                    <a href="#">
-                                        <AiOutlineMinusCircle />
-                                    </a>
-                                    <input type="number" class="form-qty-control" style={{width: '5%'}}/>
-                                    <a href="#">
-                                        <AiOutlinePlusCircle />
-                                    </a>
-                                </div>
-                            </div>
-                            <h5>Rp. 100.000</h5>
-                        </div>
-                    </div>
-                    <hr />
+                    {
+                        Object.keys(cart).length > 0 &&
+                            (cart.data.length > 0) && cart.data.map((row, key) => {
+                                return <>
+                                    <div className="form-cart d-flex">
+                                        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" />
+                                        <img className="product-img" src={
+                                                        row.product.image 
+                                                            ? `${process.env.REACT_APP_DOMAIN}${row.product.image}?${new Date().getTime()}` 
+                                                            : `${process.env.REACT_APP_DOMAIN}/products/no_image.jpg?${new Date().getTime()}`
+                                                        } />
+                                        <div className="d-flex flex-column ms-2">
+                                            <p>{row.product.name}
+                                                {(row.is_discount === 1) && <span className="badge bg-danger ms-2">Disc</span>}
+                                            </p>
+                                            <div className="d-flex justify-content-between">
+                                                <a href="#">
+                                                    <MdOutlineRemoveShoppingCart />
+                                                </a>
+                                                <div className="qty-control d-flex justify-content-end">
+                                                    <a href="#">
+                                                        <AiOutlineMinusCircle />
+                                                    </a>
+                                                    <input type="number" className="form-qty-control" style={{width: '5%'}} value={row.qty}/>
+                                                    <a href="#">
+                                                        <AiOutlinePlusCircle />
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <h5>Rp. {priceSplitter(row.total_price)}</h5>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                </>
+                            })
+                    }
                 </div>
-                <div class="container">
+                <div className="container">
                 </div>
-                <div class="container card-price">
-                    <div class="card shadow-sm p-3 mb-5 bg-white rounded">
+                <div className="container card-price">
+                    <div className="card shadow-sm p-3 mb-5 bg-white rounded">
                         <h5>Ringkasan Belanja</h5>
-                        <div class="d-flex justify-content-between">
+                        <div className="d-flex justify-content-between">
                             <p>Total harga (0 Barang)</p>
                             <p>Rp0</p>
                         </div>  
                         <hr style={{marginTop: '0'}} />
-                        <button class="btn btn-secondary*">Beli</button>
+                        <button className="btn btn-secondary*">Beli</button>
                     </div>
                 </div>
             </div>

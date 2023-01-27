@@ -45,6 +45,14 @@
     margin-right: 5px;
 }
 
+.qty-control a .btn-plus {
+    color: #6c757d;
+}
+
+.qty-control a .btn-minus {
+    color: #6c757d;
+}
+
 input[type='number'] {
     -moz-appearance:textfield;
 }

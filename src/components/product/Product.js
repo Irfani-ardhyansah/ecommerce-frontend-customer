@@ -3,7 +3,9 @@ import './Product.css'
 import { MdShoppingCart } from "react-icons/md";
 import Slider from "react-slick";
 import { useState, useEffect, useRef } from "react"
+import {priceSplitter} from '../../Helper'
 import axios from 'axios'
+import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai";
 
 const Product = () => {
     const settings = {
@@ -45,6 +47,8 @@ const Product = () => {
         headers: { Authorization: `Bearer ${dataLogin.token}`, 'Content-Type': 'multipart/form-data' }
     }
     const [product, setProduct]             = useState([])
+    const [inputQty, setInputQty]           = useState(null)
+    const [qty, setQty]                     = useState(0)
 
     useEffect(() => {
         getProduct()
@@ -58,7 +62,15 @@ const Product = () => {
         }
     }
 
-    const priceSplitter = (number) => (number && number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'));
+    const handleQty = async (key, cartQty) => {
+        setInputQty(key)
+        setQty(cartQty)
+    }
+
+    const handleKeyDownQty = async(event) => {
+        let value = event.target.value
+        setQty(value)
+    }
 
     return (
         <div style={{marginBottom: '3vh'}}>
@@ -100,9 +112,23 @@ const Product = () => {
                                     </div>
                                 </div>
                                 <div class="product-card-footer">
-                                    <button class="btn btn-secondary btn-sm btn-cart" style={{width: '100%'}}>
-                                        <MdShoppingCart />
-                                    </button>
+                                    {
+                                        (inputQty !== key) 
+                                        ? 
+                                        <button class="btn btn-secondary btn-sm btn-cart" onClick={() => handleQty(key, row.carts[0].qty)} style={{width: '100%'}}>
+                                            <MdShoppingCart />
+                                            {(row.carts.length > 0) && row.carts[0].qty}
+                                        </button> 
+                                        : <div className="qty-control d-flex justify-content-center">                                        
+                                            <a href="#">
+                                                <AiOutlineMinusCircle className="btn-minus" />
+                                            </a>
+                                            <input type="number" className="form-qty-control" style={{width: '1rem'}} value={qty} onChange={(e) => handleKeyDownQty(e)}/>
+                                            <a href="#">
+                                                <AiOutlinePlusCircle className="btn-plus"/>
+                                            </a>
+                                        </div> 
+                                    }
                                 </div>
                             </div>
                         </>
