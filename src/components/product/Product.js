@@ -6,7 +6,7 @@ import { useState, useEffect, useRef } from "react"
 import {priceSplitter} from '../../Helper'
 import axios from 'axios'
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai";
-
+    
 const Product = () => {
     const settings = {
         dots: false,
@@ -49,10 +49,27 @@ const Product = () => {
     const [product, setProduct]             = useState([])
     const [inputQty, setInputQty]           = useState(null)
     const [qty, setQty]                     = useState(0)
-
+    const [count, setCount]                 = useState(0)
+    const refOne                            = useRef(null)
+    const [productId, setProductId]         = useState(null)
+    
     useEffect(() => {
         getProduct()
+        document.addEventListener('click', handleClickOutside, true)
     }, [])
+
+    const handleClickOutside = async (e) => {
+        let qtySend         = qty
+        let productIdSend   = productId
+        if(!refOne.current.contains(e.target)) {
+            // clicked outside
+            setInputQty(!inputQty)
+            console.log(qtySend)
+            console.log(productIdSend)
+        } else {
+            // clicked inside
+        }
+    }
 
     const getProduct = async () => {
         const result = await axios.get(`${process.env.REACT_APP_DOMAIN}/api/product`, config)
@@ -62,14 +79,27 @@ const Product = () => {
         }
     }
 
-    const handleQty = async (key, cartQty) => {
+    const handleQty = async (key, data) => {
         setInputQty(key)
+        const cartQty = data.carts[0].qty
         setQty(cartQty)
+        const id = data.id
+        setProductId(id)
     }
 
     const handleKeyDownQty = async(event) => {
         let value = event.target.value
         setQty(value)
+    }
+
+    const handleIncrementQty = async() => {
+        setQty(qty + 1)
+    }
+
+    const handleDecrementQty = async() => {
+        if(qty > 0) {
+            setQty(qty - 1)
+        }
     }
 
     return (
@@ -115,16 +145,17 @@ const Product = () => {
                                     {
                                         (inputQty !== key) 
                                         ? 
-                                        <button class="btn btn-secondary btn-sm btn-cart" onClick={() => handleQty(key, row.carts[0].qty)} style={{width: '100%'}}>
+                                        <button class="btn btn-secondary btn-sm btn-cart" onClick={() => handleQty(key, row)} style={{width: '100%'}}>
                                             <MdShoppingCart />
                                             {(row.carts.length > 0) && row.carts[0].qty}
                                         </button> 
-                                        : <div className="qty-control d-flex justify-content-center">                                        
-                                            <a href="#">
+                                        : 
+                                        <div className="qty-control d-flex justify-content-center" ref={refOne}>                                        
+                                            <a onClick={handleDecrementQty}>
                                                 <AiOutlineMinusCircle className="btn-minus" />
                                             </a>
-                                            <input type="number" className="form-qty-control" style={{width: '1rem'}} value={qty} onChange={(e) => handleKeyDownQty(e)}/>
-                                            <a href="#">
+                                            <input type="number" readOnly className="form-qty-control" style={{width: '2rem', textAlign: 'center'}} value={qty} onChange={(e) => handleKeyDownQty(e)}/>
+                                            <a onClick={handleIncrementQty}>
                                                 <AiOutlinePlusCircle className="btn-plus"/>
                                             </a>
                                         </div> 
@@ -134,121 +165,6 @@ const Product = () => {
                         </>
                     })
                 }
-                {/* <div class="card product-card">
-                    <img src={product_1} class="product-img" />
-                    <div class="product-card-body">
-                        <div class="product-card-description">
-                            <p>Product 1 ini</p>
-                            <div class="product-qty">
-                                50
-                            </div>
-                        </div>
-                        <div class="product-card-price d-flex justify-content-between align-items-center">
-                            <h5><span style={{textDecoration:'line-through'}}>Rp. 100.000 </span></h5>
-                            <h6><span style={{color: 'red'}}>Rp. 100.000</span></h6>
-                        </div>
-                    </div>
-                    <div class="product-card-footer">
-                        <button class="btn btn-secondary btn-sm btn-cart" style={{width: '100%'}}>
-                            <MdShoppingCart />
-                        </button>
-                    </div>
-                </div>
-                <div class="card product-card">
-                    <img src={product_1} class="product-img" />
-                    <div class="product-card-body">
-                        <div class="product-card-description">
-                            <p>Product 1 ini</p>
-                            <div class="product-qty">
-                                50
-                            </div>
-                        </div>
-                        <div class="product-card-price">
-                            <h5>Rp. 100.000</h5>
-                        </div>
-                    </div>
-                    <div class="product-card-footer">
-                        <button class="btn btn-secondary btn-sm btn-cart" style={{width: '100%'}}>
-                            <MdShoppingCart />
-                        </button>
-                    </div>
-                </div>
-                <div class="card product-card">
-                    <img src={product_1} class="product-img" />
-                    <div class="product-card-body">
-                        <div class="product-card-description">
-                            <p>Product 1 ini</p>
-                            <div class="product-qty">
-                                50
-                            </div>
-                        </div>
-                        <div class="product-card-price">
-                            <h5>Rp. 100.000</h5>
-                        </div>
-                    </div>
-                    <div class="product-card-footer">
-                        <button class="btn btn-secondary btn-sm btn-cart" style={{width: '100%'}}>
-                            <MdShoppingCart />
-                        </button>
-                    </div>
-                </div>
-                <div class="card product-card">
-                    <img src={product_1} class="product-img" />
-                    <div class="product-card-body">
-                        <div class="product-card-description">
-                            <p>Product 1 ini</p>
-                            <div class="product-qty">
-                                50
-                            </div>
-                        </div>
-                        <div class="product-card-price">
-                            <h5>Rp. 100.000</h5>
-                        </div>
-                    </div>
-                    <div class="product-card-footer">
-                        <button class="btn btn-secondary btn-sm btn-cart" style={{width: '100%'}}>
-                            <MdShoppingCart />
-                        </button>
-                    </div>
-                </div>
-                <div class="card product-card">
-                    <img src={product_1} class="product-img" />
-                    <div class="product-card-body">
-                        <div class="product-card-description">
-                            <p>Product 1 ini</p>
-                            <div class="product-qty">
-                                50
-                            </div>
-                        </div>
-                        <div class="product-card-price">
-                            <h5>Rp. 100.000</h5>
-                        </div>
-                    </div>
-                    <div class="product-card-footer">
-                        <button class="btn btn-secondary btn-sm btn-cart" style={{width: '100%'}}>
-                            <MdShoppingCart />
-                        </button>
-                    </div>
-                </div>
-                <div class="card product-card">
-                    <img src={product_1} class="product-img" />
-                    <div class="product-card-body">
-                        <div class="product-card-description">
-                            <p>Product 1 ini</p>
-                            <div class="product-qty">
-                                50
-                            </div>
-                        </div>
-                        <div class="product-card-price">
-                            <h5>Rp. 100.000</h5>
-                        </div>
-                    </div>
-                    <div class="product-card-footer">
-                        <button class="btn btn-secondary btn-sm btn-cart" style={{width: '100%'}}>
-                            <MdShoppingCart />
-                        </button>
-                    </div>
-                </div> */}
             </Slider>
         </div>
     )
