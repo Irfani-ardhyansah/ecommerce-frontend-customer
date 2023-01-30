@@ -52,20 +52,65 @@ const Product = () => {
     const [count, setCount]                 = useState(0)
     const refOne                            = useRef(null)
     const [productId, setProductId]         = useState(null)
-    
+    const [cartId, setCartId]               = useState(null)
+    const [counter, setCounter]             = useState(null)
+    const [reload, setReload]               = useState(false)
+
     useEffect(() => {
         getProduct()
         document.addEventListener('click', handleClickOutside, true)
     }, [])
 
+    useEffect(() => {
+        const timer =
+            counter >= 0 && setInterval(() => setCounter(counter - 1), 1000);
+        return () => clearInterval(timer)
+    }, [qty])
+
+    useEffect(() => {
+        if(counter == 0) {
+            if(qty != 0) {
+                sendApiStore()
+            } else {
+                sendApiDelete()
+            }
+        }
+    }, [counter])
+
+    useEffect(() => {
+        getProduct()
+    }, [reload])
+
+    const sendApiDelete = async () => {
+        const result = await axios({
+            method: "POST",
+            url: `${process.env.REACT_APP_DOMAIN}/api/cart/${cartId}`,
+            params: {'_method': 'DELETE'}  ,
+            headers: config.headers,
+        })
+
+        checkReload(result)
+    }
+
+    const sendApiStore = async () => {
+        const formData = new FormData()   
+        formData.append("product_id", productId)
+        formData.append("qty", qty)
+        
+        const result = await axios({
+            method: "POST",
+            url: `${process.env.REACT_APP_DOMAIN}/api/cart`,
+            data: formData,
+            headers: config.headers,
+        })
+
+        checkReload(result)
+    }
+
     const handleClickOutside = async (e) => {
-        let qtySend         = qty
-        let productIdSend   = productId
         if(!refOne.current.contains(e.target)) {
             // clicked outside
-            setInputQty(!inputQty)
-            console.log(qtySend)
-            console.log(productIdSend)
+            setInputQty(null)
         } else {
             // clicked inside
         }
@@ -81,8 +126,15 @@ const Product = () => {
 
     const handleQty = async (key, data) => {
         setInputQty(key)
-        const cartQty = data.carts[0].qty
-        setQty(cartQty)
+        if(data.carts.length > 0) {
+            const cartQty = data.carts[0].qty
+            setQty(cartQty)
+            const idCart = data.carts[0].id 
+            setCartId(idCart)
+        } else {
+            setQty(0)
+            setCartId(null)
+        }
         const id = data.id
         setProductId(id)
     }
@@ -94,11 +146,21 @@ const Product = () => {
 
     const handleIncrementQty = async() => {
         setQty(qty + 1)
+        setCounter(1)
     }
 
     const handleDecrementQty = async() => {
         if(qty > 0) {
             setQty(qty - 1)
+            setCounter(1)
+        }
+    }
+
+    const checkReload = (result) => {
+        if(result.data.status == 200) {
+            setReload(!reload)
+        } else {
+            console.log(result)
         }
     }
 

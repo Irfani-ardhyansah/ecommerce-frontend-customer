@@ -47,10 +47,12 @@
 
 .qty-control a .btn-plus {
     color: #6c757d;
+    cursor: pointer; 
 }
 
 .qty-control a .btn-minus {
     color: #6c757d;
+    cursor: pointer; 
 }
 
 input[type='number'] {

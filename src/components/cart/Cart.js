@@ -25,8 +25,23 @@ const Cart = () => {
         }
     }
 
-    console.log('cart')
-    console.log(cart)
+
+    const handleIncrementQty = async(qty) => {
+        // setQty(qty + 1)
+        // setCounter(1)
+        console.log('increment')
+        console.log(qty)
+    }
+
+    const handleDecrementQty = async(qty) => {
+        // if(qty > 0) {
+        //     setQty(qty - 1)
+        //     setCounter(1)
+        // }
+
+        console.log('decrement')
+        console.log(qty)
+    }
 
     return (
         <>
@@ -62,12 +77,12 @@ const Cart = () => {
                                                     <MdOutlineRemoveShoppingCart />
                                                 </a>
                                                 <div className="qty-control d-flex justify-content-end">
-                                                    <a href="#">
-                                                        <AiOutlineMinusCircle />
+                                                    <a onClick={() => handleDecrementQty(row.qty)}>
+                                                        <AiOutlineMinusCircle className="btn-minus" />
                                                     </a>
                                                     <input type="number" className="form-qty-control" style={{width: '5%'}} value={row.qty}/>
-                                                    <a href="#">
-                                                        <AiOutlinePlusCircle />
+                                                    <a onClick={() => handleIncrementQty(row.qty)}>
+                                                        <AiOutlinePlusCircle className="btn-plus" />
                                                     </a>
                                                 </div>
                                             </div>
