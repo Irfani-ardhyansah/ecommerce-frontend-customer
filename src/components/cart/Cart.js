@@ -19,14 +19,19 @@ const Cart = () => {
     const [checkQty, setCheckQty]           = useState(0)
     const [productId, setProductId]         = useState(null)
     const [cartId, setCartId]               = useState(null)
-    
+    const [selected, setSelected]           = useState([])
+    const [summary, setSummary]             = useState({
+        qty: 0, total_price: 0
+    })  
+
     useEffect(() => {
         getCart()
     }, [])
 
     useEffect(() => {
         if(Object.keys(cart).length > 0 && cart.data.length > 0) {
-            setCarts([...cart.data]);
+            let data = cart.data.map((o, item) => ({ ...o, selected: false}))
+            setCarts([...data])
         }
     }, [cart])
 
@@ -40,14 +45,25 @@ const Cart = () => {
     useEffect(() => {
         if(counter == 0) {
             if(checkQty != 0) {
-                console.log('sendApiStore()')
                 sendApiStore()
             } else {
-                console.log('sendApiDelete()')
                 sendApiDelete()
             }
         }
     }, [counter])
+
+    useEffect(() => {
+        getCart()
+    }, [reload])
+
+
+    useEffect(() => {
+        let summaryTotalPrice = selected.reduce((prev, current) => {
+            return prev + +current.total_price
+        }, 0);
+        let summaryQty = selected.length
+        setSummary({qty: summaryQty, total_price: summaryTotalPrice})
+    }, [selected])
 
     const sendApiDelete = async () => {
         const result = await axios({
@@ -99,7 +115,6 @@ const Cart = () => {
 
     const handleDecrementQty = async(value, id) => {
         let qty = value.qty
-        console.log(value)
         if(qty > 0) {
             qty -= 1
             setCheckQty(qty)
@@ -123,6 +138,46 @@ const Cart = () => {
         }
     }
 
+    const handleChecked = async(event, item) => {
+        if (event.target.checked) {
+            setCartsChecked(item, true)
+
+            let data = {id: item.id, total_price: item.total_price}
+            setSelected([...selected, data])
+        } else {
+            setCartsChecked(item, false)
+
+            setSelected((prev) =>
+                prev.filter((currItem) => currItem.id !== item.id)
+            )
+        }
+    }
+
+    const handleCheckedAll = async (event) => {
+        if (event.target.checked) {
+            let data = cart.data.map((o, item) => ({ ...o, selected: true}))
+            setCarts([...data])
+
+            let summaryTotalPrice = cart.data.reduce((prev, current) => {
+                return prev + +current.total_price
+            }, 0);
+            let summaryQty = cart.data.length
+            setSummary({qty: summaryQty, total_price: summaryTotalPrice})
+        } else {
+            let data = cart.data.map((o, item) => ({ ...o, selected: false}))
+            setCarts([...data])
+            setSummary({qty: 0, total_price: 0})
+        }
+    }
+
+    const setCartsChecked = (item, status) => {
+        setCarts((cart) =>
+            cart?.map((list, index) =>
+                list.id === item.id ? { ...list, selected: status } : list
+            )
+        );
+    }
+    
     return (
         <>
             <Navbar />
@@ -131,7 +186,7 @@ const Cart = () => {
                 <div className="container">
                     <h5>Keranjang</h5>
                     <div className="form-cart">
-                        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" />
+                        <input type="checkbox" onChange={(event) => handleCheckedAll(event)} />
                         <label className="label-all">Pilih Semua</label>
                     </div>
                     <hr />
@@ -140,7 +195,7 @@ const Cart = () => {
                             (carts.length > 0) && carts.map((row, key) => {
                                 return <>
                                     <div className="form-cart d-flex">
-                                        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" />
+                                        <input type="checkbox" checked={row.selected} onChange={(event) => handleChecked(event, row)} />
                                         <img className="product-img" src={
                                                         row.product.image 
                                                             ? `${process.env.REACT_APP_DOMAIN}${row.product.image}?${new Date().getTime()}` 
@@ -178,11 +233,11 @@ const Cart = () => {
                     <div className="card shadow-sm p-3 mb-5 bg-white rounded">
                         <h5>Ringkasan Belanja</h5>
                         <div className="d-flex justify-content-between">
-                            <p>Total harga (0 Barang)</p>
-                            <p>Rp0</p>
+                            <p>Total harga ({summary.qty} Barang)</p>
+                            <p>Rp. {priceSplitter(summary.total_price)}</p>
                         </div>  
                         <hr style={{marginTop: '0'}} />
-                        <button className="btn btn-secondary*">Beli</button>
+                        <button className="btn btn-secondary" disabled={summary.qty == 0 && true}>Beli</button>
                     </div>
                 </div>
             </div>
