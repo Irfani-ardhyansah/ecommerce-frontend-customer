@@ -13,10 +13,67 @@ const Cart = () => {
         headers: { Authorization: `Bearer ${dataLogin.token}`, 'Content-Type': 'multipart/form-data' }
     }
     const [cart, setCart]   = useState({})
+    const [carts, setCarts] = useState([])
+    const [counter, setCounter]             = useState(null)
+    const [reload, setReload]               = useState(false)
+    const [checkQty, setCheckQty]           = useState(0)
+    const [productId, setProductId]         = useState(null)
+    const [cartId, setCartId]               = useState(null)
     
     useEffect(() => {
         getCart()
     }, [])
+
+    useEffect(() => {
+        if(Object.keys(cart).length > 0 && cart.data.length > 0) {
+            setCarts([...cart.data]);
+        }
+    }, [cart])
+
+    useEffect(() => {
+        const timer =
+        counter >= 0 && setInterval(() => setCounter(counter - 1), 1000);
+        return () => clearInterval(timer)
+    }, [carts])
+
+
+    useEffect(() => {
+        if(counter == 0) {
+            if(checkQty != 0) {
+                console.log('sendApiStore()')
+                sendApiStore()
+            } else {
+                console.log('sendApiDelete()')
+                sendApiDelete()
+            }
+        }
+    }, [counter])
+
+    const sendApiDelete = async () => {
+        const result = await axios({
+            method: "POST",
+            url: `${process.env.REACT_APP_DOMAIN}/api/cart/${cartId}`,
+            params: {'_method': 'DELETE'}  ,
+            headers: config.headers,
+        })
+
+        checkReload(result)
+    }
+
+    const sendApiStore = async () => {
+        const formData = new FormData()   
+        formData.append("product_id", productId)
+        formData.append("qty", checkQty)
+        
+        const result = await axios({
+            method: "POST",
+            url: `${process.env.REACT_APP_DOMAIN}/api/cart`,
+            data: formData,
+            headers: config.headers,
+        })
+
+        checkReload(result)
+    }
 
     const getCart = async () => {
         const result = await axios.get(`${process.env.REACT_APP_DOMAIN}/api/cart`, config)
@@ -25,22 +82,45 @@ const Cart = () => {
         }
     }
 
-
-    const handleIncrementQty = async(qty) => {
-        // setQty(qty + 1)
-        // setCounter(1)
-        console.log('increment')
-        console.log(qty)
+    const handleIncrementQty = async(value, id) => {
+        let qty = value.qty
+        qty += 1
+        setCheckQty(qty)
+        setProductId(value.product_id)
+        setCartId(value.id)
+        setCounter(1)
+        carts.length > 0 &&
+            setCarts((cart) =>
+                cart?.map((list, index) =>
+                    index === id ? { ...list, qty: qty } : list
+                )
+            );
     }
 
-    const handleDecrementQty = async(qty) => {
-        // if(qty > 0) {
-        //     setQty(qty - 1)
-        //     setCounter(1)
-        // }
+    const handleDecrementQty = async(value, id) => {
+        let qty = value.qty
+        console.log(value)
+        if(qty > 0) {
+            qty -= 1
+            setCheckQty(qty)
+            setProductId(value.product_id)
+            setCartId(value.id)
+            setCounter(1)
+            carts.length > 0 &&
+                setCarts((cart) =>
+                    cart?.map((list, index) =>
+                        index === id ? { ...list, qty: qty } : list
+                    )
+                );
+        }
+    }
 
-        console.log('decrement')
-        console.log(qty)
+    const checkReload = (result) => {
+        if(result.data.status == 200) {
+            setReload(!reload)
+        } else {
+            console.log(result)
+        }
     }
 
     return (
@@ -56,10 +136,8 @@ const Cart = () => {
                     </div>
                     <hr />
 
-                    {/* product start */}
                     {
-                        Object.keys(cart).length > 0 &&
-                            (cart.data.length > 0) && cart.data.map((row, key) => {
+                            (carts.length > 0) && carts.map((row, key) => {
                                 return <>
                                     <div className="form-cart d-flex">
                                         <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" />
@@ -77,11 +155,11 @@ const Cart = () => {
                                                     <MdOutlineRemoveShoppingCart />
                                                 </a>
                                                 <div className="qty-control d-flex justify-content-end">
-                                                    <a onClick={() => handleDecrementQty(row.qty)}>
+                                                    <a onClick={() => handleDecrementQty(row, key)}>
                                                         <AiOutlineMinusCircle className="btn-minus" />
                                                     </a>
                                                     <input type="number" className="form-qty-control" style={{width: '5%'}} value={row.qty}/>
-                                                    <a onClick={() => handleIncrementQty(row.qty)}>
+                                                    <a onClick={() => handleIncrementQty(row, key)}>
                                                         <AiOutlinePlusCircle className="btn-plus" />
                                                     </a>
                                                 </div>
