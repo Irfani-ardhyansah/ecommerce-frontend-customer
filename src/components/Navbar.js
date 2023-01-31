@@ -1,15 +1,35 @@
 import './Navbar.css'
 import { MdShoppingCart, MdMessage, MdCategory, MdOutlineSearch } from "react-icons/md";
 import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef } from "react"
+import axios from 'axios'
 
 const Navbar = () => {
     const isAuthenticated = localStorage.getItem('dataLogin')
     const dataLogin = JSON.parse(isAuthenticated)
-    let navigate = useNavigate();
+    let navigate    = useNavigate();
+    const config                            = {
+        headers: { Authorization: `Bearer ${dataLogin.token}`, 'Content-Type': 'multipart/form-data' }
+    }
+    const [cartQty, setCartQty] = useState(0)
+
+    useEffect(() => {
+        getCartQty()
+    }, [])
+
+    const getCartQty = async() => {
+        const result = await axios.get(`${process.env.REACT_APP_DOMAIN}/api/cart/qty`, config)
+
+        if(result.data.status == 200) {
+            setCartQty(result.data.data)
+        }
+    }
+
     const logout = () => {
         localStorage.clear()
         navigate('/')
     }
+
     return (
         <>
             <nav class="navbar navbar-expand-lg navbar-light bg-light p-10" style={{position: 'sticky', top: 0, zIndex: 1}}>
@@ -43,7 +63,8 @@ const Navbar = () => {
                             </li>
                             <li class="nav-item">
                                 <Link to="/cart" class="nav-link" >
-                                    <MdShoppingCart />                                
+                                    <MdShoppingCart />       
+                                    <span class='badge bg-secondary badge-cart' id='lblCartCount'> {cartQty} </span>                         
                                 </Link>
                             </li>
                             <li class="nav-item">
