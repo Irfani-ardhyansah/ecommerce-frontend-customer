@@ -65,10 +65,11 @@ const Cart = () => {
         setSummary({qty: summaryQty, total_price: summaryTotalPrice})
     }, [selected])
 
-    const sendApiDelete = async () => {
+    const sendApiDelete = async (id = null) => {
+        let cartIdDelete = id ? id : cartId
         const result = await axios({
             method: "POST",
-            url: `${process.env.REACT_APP_DOMAIN}/api/cart/${cartId}`,
+            url: `${process.env.REACT_APP_DOMAIN}/api/cart/${cartIdDelete}`,
             params: {'_method': 'DELETE'}  ,
             headers: config.headers,
         })
@@ -170,6 +171,10 @@ const Cart = () => {
         }
     }
 
+    const handleDelete = async (id) => {
+        sendApiDelete(id)
+    }
+
     const setCartsChecked = (item, status) => {
         setCarts((cart) =>
             cart?.map((list, index) =>
@@ -203,10 +208,10 @@ const Cart = () => {
                                                         } />
                                         <div className="d-flex flex-column ms-2">
                                             <p>{row.product.name}
-                                                {(row.is_discount === 1) && <span className="badge bg-danger ms-2">Disc</span>}
+                                                {(row.is_discount === 1) && <span class='badge bg-danger badge-cart-disc' id='lblCartDisc'>Disc</span>}
                                             </p>
                                             <div className="d-flex justify-content-between">
-                                                <a href="#">
+                                                <a onClick={() => handleDelete(row.id)}>
                                                     <MdOutlineRemoveShoppingCart />
                                                 </a>
                                                 <div className="qty-control d-flex justify-content-end">
