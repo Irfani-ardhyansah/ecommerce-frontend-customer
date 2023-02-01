@@ -6,12 +6,15 @@ import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai";
 import { useState, useEffect, useRef } from "react"
 import axios from 'axios'
 import {priceSplitter} from '../../Helper'
+import {useDispatch} from 'react-redux'
+import {increment, decrement} from '../../actions'
 
 const Cart = () => {
     const dataLogin                         = JSON.parse(localStorage.getItem('dataLogin'))
     const config                            = {
         headers: { Authorization: `Bearer ${dataLogin.token}`, 'Content-Type': 'multipart/form-data' }
     }
+    const dispatch                          = useDispatch()
     const [cart, setCart]   = useState({})
     const [carts, setCarts] = useState([])
     const [counter, setCounter]             = useState(null)
@@ -74,6 +77,7 @@ const Cart = () => {
             headers: config.headers,
         })
 
+        dispatch(decrement(1))
         checkReload(result)
     }
 

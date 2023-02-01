@@ -1,11 +1,13 @@
 import product_1 from '../../img/5.jpg'
 import './Product.css'
-import { MdShoppingCart } from "react-icons/md";
-import Slider from "react-slick";
+import { MdShoppingCart } from "react-icons/md"
+import Slider from "react-slick"
 import { useState, useEffect, useRef } from "react"
 import {priceSplitter} from '../../Helper'
 import axios from 'axios'
-import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai";
+import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai"
+import {useDispatch} from 'react-redux'
+import {increment, decrement} from '../../actions'
     
 const Product = () => {
     const settings = {
@@ -46,6 +48,7 @@ const Product = () => {
     const config                            = {
         headers: { Authorization: `Bearer ${dataLogin.token}`, 'Content-Type': 'multipart/form-data' }
     }
+    const dispatch                          = useDispatch()
     const [product, setProduct]             = useState([])
     const [inputQty, setInputQty]           = useState(null)
     const [qty, setQty]                     = useState(0)
@@ -89,7 +92,13 @@ const Product = () => {
             headers: config.headers,
         })
 
-        checkReload(result)
+        let response = result.data
+        if(response.status == 200) {
+            dispatch(decrement(1))
+            checkReload(result)
+        } else {
+            console.log(result)
+        }
     }
 
     const sendApiStore = async () => {
@@ -104,7 +113,16 @@ const Product = () => {
             headers: config.headers,
         })
 
-        checkReload(result)
+        let response = result.data
+
+        if(response.status == 200) {
+            if(response.data.status == 'created') {
+                dispatch(increment(1))
+            }
+            checkReload(result)
+        } else {
+            console.log(result)
+        }
     }
 
     const handleClickOutside = async (e) => {

@@ -3,15 +3,18 @@ import { MdShoppingCart, MdMessage, MdCategory, MdOutlineSearch } from "react-ic
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from "react"
 import axios from 'axios'
+import {useSelector, useDispatch} from 'react-redux'
+import {set} from '../actions'
 
 const Navbar = () => {
-    const isAuthenticated = localStorage.getItem('dataLogin')
-    const dataLogin = JSON.parse(isAuthenticated)
-    let navigate    = useNavigate();
-    const config                            = {
+    const cartQty           = useSelector(state => state.cart)
+    const dispatch          = useDispatch()
+    const isAuthenticated   = localStorage.getItem('dataLogin')
+    const dataLogin         = JSON.parse(isAuthenticated)
+    let navigate            = useNavigate();
+    const config            = {
         headers: { Authorization: `Bearer ${dataLogin.token}`, 'Content-Type': 'multipart/form-data' }
     }
-    const [cartQty, setCartQty] = useState(0)
 
     useEffect(() => {
         getCartQty()
@@ -21,7 +24,7 @@ const Navbar = () => {
         const result = await axios.get(`${process.env.REACT_APP_DOMAIN}/api/cart/qty`, config)
 
         if(result.data.status == 200) {
-            setCartQty(result.data.data)
+            dispatch(set(result.data.data))
         }
     }
 
