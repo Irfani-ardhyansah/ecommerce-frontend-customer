@@ -136,7 +136,6 @@ const Product = () => {
 
     const getProduct = async () => {
         const result = await axios.get(`${process.env.REACT_APP_DOMAIN}/api/product`, config)
-
         if(result.data.status == 200) {
             setProduct(result.data.data)
         }

@@ -85,7 +85,7 @@ const Cart = () => {
         const formData = new FormData()   
         formData.append("product_id", productId)
         formData.append("qty", checkQty)
-        
+            
         const result = await axios({
             method: "POST",
             url: `${process.env.REACT_APP_DOMAIN}/api/cart`,

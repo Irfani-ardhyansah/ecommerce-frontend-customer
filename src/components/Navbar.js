@@ -7,12 +7,12 @@ import {useSelector, useDispatch} from 'react-redux'
 import {set} from '../actions'
 
 const Navbar = () => {
-    const cartQty           = useSelector(state => state.cart)
-    const dispatch          = useDispatch()
-    const isAuthenticated   = localStorage.getItem('dataLogin')
-    const dataLogin         = JSON.parse(isAuthenticated)
-    let navigate            = useNavigate();
-    const config            = {
+    const cartQty                           = useSelector(state => state.cart)
+    const dispatch                          = useDispatch()
+    const isAuthenticated                   = localStorage.getItem('dataLogin')
+    const dataLogin                         = JSON.parse(isAuthenticated)
+    let navigate                            = useNavigate();
+    const config                            = {
         headers: { Authorization: `Bearer ${dataLogin.token}`, 'Content-Type': 'multipart/form-data' }
     }
 
@@ -28,6 +28,7 @@ const Navbar = () => {
         }
     }
 
+    
     const logout = () => {
         localStorage.clear()
         navigate('/')
