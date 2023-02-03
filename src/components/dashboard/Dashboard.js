@@ -7,6 +7,7 @@ import Product from '../product/Product'
 const Dashboard = () => {
     return (
         <>
+            <Navbar />
             <div class="dashboard">
                 <div class="container">
                     <Carousel />

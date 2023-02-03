@@ -2,28 +2,49 @@ import product_1 from '../../img/5.jpg'
 import './Product.css'
 import { MdShoppingCart } from "react-icons/md";
 import { useState, useEffect, useRef } from "react"
+import InfiniteScroll from 'react-infinite-scroll-component'
+import './List.css'
+import Navbar from '../Navbar'
 
 const List = () => {
-    const [products, setProducts] = useState([])
+    const [products, setProducts] = useState(Array.from({length: 10}))
+    const [hasMore, setHasMore] = useState(true)
 
-
-useEffect(() => {
-    const rows = [];
-    for (let i = 0; i < 50; i++) {
-        rows.push(i);
+    const fetchMoreData = () => {
+        if(products.length < 30) {
+            // Make Api Call
+            setTimeout(() => {
+                setProducts(products.concat(Array.from({length: 10})))
+            }, 1000)
+        } else {
+            setHasMore(false)
+        }
     }
 
-    setProducts(rows)
-}, [])
-    return (
 
+    return (<>
+      <Navbar />
         <div class="dashboard">
             <div class="container">
                 <div>
                     <div class="product-title d-flex align-items-center">
                         <h4>Category 1</h4>
                     </div>
-
+                    <InfiniteScroll 
+                        dataLength={products.length} 
+                        next={fetchMoreData} 
+                        hasMore={hasMore}
+                        loader={
+                                <div className="d-flex align-items-center justify-content-center mt-2 mb-2">
+                                    <div className="loader"></div>
+                                </div>
+                                }
+                        endMessage={
+                                    <div className="d-flex align-items-center justify-content-center mt-2 mb-2">
+                                        <p>You are all set!</p>
+                                    </div>
+                                    }
+                    >
                     {
                         (products.length > 0) && products.map((row, key) => {
                             console.log(row)
@@ -50,6 +71,7 @@ useEffect(() => {
                             </>
                         })
                     }
+                    </InfiniteScroll>
                     {/* <div class="card product-card me-2 mb-3">
                         <img src={product_1} class="product-img" />
                         <div class="product-card-body">
@@ -72,6 +94,7 @@ useEffect(() => {
                 </div>
             </div>
         </div>
+    </>
     )
 }
 

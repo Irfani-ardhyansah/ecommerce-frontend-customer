@@ -11,7 +11,6 @@ import Navbar from './components/Navbar'
 function App() {
   return (
     <BrowserRouter>
-      <Navbar />
         <Routes>
           <Route path="/" exact element={<Login />} />  
           <Route path="/register" exact element={<Register />} />  

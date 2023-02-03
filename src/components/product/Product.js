@@ -8,7 +8,8 @@ import axios from 'axios'
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai"
 import {useDispatch} from 'react-redux'
 import {increment, decrement} from '../../actions'
-    
+import { Link, useNavigate, useLocation } from 'react-router-dom'
+
 const Product = () => {
     const settings = {
         dots: false,
@@ -187,7 +188,9 @@ const Product = () => {
             
             <div class="product-title d-flex align-items-center">
                 <h4>Category 1</h4>
-                <a href="#" class="product-title-link-all">Lihat semua</a>
+                <Link to="/product/all" class="product-title-link-all">Lihat semua</Link>
+
+                {/* <a href="#" class="product-title-link-all">Lihat semua</a> */}
             </div>
 
             <Slider {...settings}>
