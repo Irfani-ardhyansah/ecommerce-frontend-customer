@@ -98,7 +98,6 @@ const Profile = () => {
 
     return (
         <>
-            <Navbar />
             <div class="profile">
                 <div class="container">
                     <div class="d-flex align-item-center justify-content-center">

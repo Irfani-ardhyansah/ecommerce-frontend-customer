@@ -9,10 +9,10 @@ const ProtectedRoute = () => {
     if(isAuthenticated) {
         const token = JSON.parse(isAuthenticated).token
         const decoded = jwt_decode(token)
-        const dateNow = new Date();
+        const dateNow = new Date()
 
         if(decoded.exp < dateNow.getTime() / 1000) {
-            const alert_exp = { ...alert, name: { statue: false, message: 'You\'r token is expired'} }
+            const alert_exp = { ...alert, name: { status: false, message: 'You\'r token is expired'} }
             localStorage.clear();
             return <Navigate to="/" state={{ alert_exp }} />
         } else {
