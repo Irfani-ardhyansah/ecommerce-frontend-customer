@@ -9,7 +9,21 @@ const Login = () => {
     const config = {
         headers: { 'Content-Type': 'multipart/form-data' }
     }
-    let navigate = useNavigate();
+    let navigate = useNavigate()
+    const [statusAlert, setStatusAlert] = useState(false)
+    const { state }         = useLocation();
+    const [alertData] = useState(state)
+
+
+    useEffect(() => {
+        if(alertData) {
+            setStatusAlert(!statusAlert)
+            setTimeout(() => {
+                setStatusAlert(statusAlert)
+            }, 6000)
+        }
+    }, [alertData])
+
 
     const sendData = async (e) => {
         // const dataLogin = {'email' : e.email, 'password' : e.pass}
@@ -36,26 +50,34 @@ const Login = () => {
         }
     }
 
+console.log(alertData)
+
     return (
         <>
-            <div class="loginContainer">
-                <div class="card loginCard">
-                    <div class="loginTitle d-flex justify-content-between">
+            <div className="loginContainer">
+                <div className="card loginCard">
+                    {
+                        statusAlert && 
+                            <div className="alert alert-danger" role="alert">
+                                {alertData.alert.message}
+                            </div>
+                    }
+                    <div className="loginTitle d-flex justify-content-between">
                         <h3>Login</h3>
-                        <Link to="/register" class="loginLink">Register</Link>
+                        <Link to="/register" className="loginLink">Register</Link>
                     </div>
-                    <form class="mt-3" onSubmit={handleSubmit(sendData)}>
-                        <div class="container">
-                            <div class="row">
-                                <label class="form-label">Email</label>
-                                <input type="email" class="form-control" placeholder="Email..." isInvalid={!!errors.email} {...register("email", { required: true })} />
+                    <form className="mt-3" onSubmit={handleSubmit(sendData)}>
+                        <div className="container">
+                            <div className="row">
+                                <label className="form-label">Email</label>
+                                <input type="email" className="form-control" placeholder="Email..." isInvalid={!!errors.email} {...register("email", { required: true })} />
                             </div>
-                            <div class="row mt-2">
-                                <label class="form-label">Password</label>
-                                <input type="password" class="form-control" placeholder="Pass..." isInvalid={!!errors.password} {...register("password", { required: true })} />
+                            <div className="row mt-2">
+                                <label className="form-label">Password</label>
+                                <input type="password" className="form-control" placeholder="Pass..." isInvalid={!!errors.password} {...register("password", { required: true })} />
                             </div>
-                            <div class="row mt-3">
-                                <button class="btn btn-secondary">Login</button>
+                            <div className="row mt-3">
+                                <button className="btn btn-secondary">Login</button>
                             </div>
                         </div>
                     </form>
