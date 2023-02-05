@@ -7,8 +7,9 @@ import { HiMinus, HiPlus, HiPencil, HiStar } from "react-icons/hi2"
 import {priceSplitter} from '../../Helper'
 
 const Detail = () => {
-    const { state }   = useLocation();
-    const [product] = useState(state)
+    const { state }     = useLocation()
+    const [product]     = useState(state)
+    const [statusNotes, setStatusNotes] = useState(false)
 
     useEffect(() => {
     }, [])
@@ -46,11 +47,11 @@ const Detail = () => {
                         <hr/>
                         {/* Jenis nanti disini  */}
                         <div className="description">
-                            <ul class="nav nav-tabs">
+                            {/* <ul class="nav">
                                 <li class="nav-item">
                                     <a class="nav-link active" href="#">Detail</a>
                                 </li>
-                            </ul>
+                            </ul> */}
                             <div className="body">
                                 <p>lorem   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </p>
                                 <p>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. </p>
@@ -58,7 +59,7 @@ const Detail = () => {
                         </div>
                     </div>
                     <div className="summary-qty">
-                        <div className="card shadow-sm p-2 rounded">
+                        <div className="card p-3 rounded">
                             <h5>Atur Jumlah dan Catatan</h5>
                             <p>Nama Barang</p>
                             <hr style={{marginTop: 0}}/>  
@@ -76,10 +77,24 @@ const Detail = () => {
                                     <p>Stock: <b>20</b></p>
                                 </div>
                             </div>
-                            <div className="notes">
-                                <a href="#">
+                            <div className="notes mt-1">
+                            {
+                                !statusNotes 
+                                ?
+                                <a onClick={() => {
+                                                    setStatusNotes(!statusNotes)
+                                                }}>
                                     <HiPencil /> Tambah Catatan
                                 </a>
+                                : <>
+                                <input className="form-control mb-1" placeholder='Contoh: Size M, Warna Abu'></input>
+                                <a onClick={() => {
+                                            setStatusNotes(!statusNotes)
+                                        }}>
+                                    Batalkan Catatan
+                                </a>
+                                </>
+                                }
                             </div>
                             <div className="disc">
                                 Rp. {priceSplitter(10000)}

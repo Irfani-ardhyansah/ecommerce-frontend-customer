@@ -239,7 +239,7 @@ const Cart = () => {
                 <div className="container">
                 </div>
                 <div className="container card-price">
-                    <div className="card shadow-sm p-3 mb-5 bg-white rounded">
+                    <div className="card p-3 mb-5 bg-white rounded">
                         <h5>Ringkasan Belanja</h5>
                         <div className="d-flex justify-content-between">
                             <p>Total harga ({summary.qty} Barang)</p>

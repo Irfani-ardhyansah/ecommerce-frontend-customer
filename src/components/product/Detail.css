@@ -7,6 +7,11 @@
     padding: 10px;
 }
 
+.product-detail-body .image img {
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+
+
 .product-detail-body .summary-product {
     flex: 0 0 33%;
     display: flex;
@@ -73,12 +78,57 @@
     margin-top: 1vh;
 }
 
+.summary-qty .card {
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+
 .summary-qty .qty-stock .stock-detail {
     margin-left: 1rem;
+    margin-top: 1vm;
 }
+
+.summary-qty .qty-stock .qty-control-detail svg {
+    vertical-align: 0 !important;
+}
+
+.summary-qty .qty-stock .qty-control-detail .btn-minus-detail {
+    border-radius: 5px      0       0       5px;
+                /* top-left top-right bottom-right bottom-left. */
+    border-right: none;
+    border-width: thin;
+    background: white;
+    height: 30px;
+}
+
+.summary-qty .qty-stock .qty-control-detail .form-qty-control {
+    border-right: none;
+    border-left: none;
+    border-width: thin;
+    height: 30px;
+}
+
+.summary-qty .qty-stock .qty-control-detail .form-qty-control:focus {
+    outline: none;
+}
+
+.summary-qty .qty-stock .qty-control-detail .btn-plus-detail {
+    border-radius: 0      5px       5px       0;
+                /* top-left top-right bottom-right bottom-left. */
+    border-left: none;
+    border-width: thin;
+    background: white;
+    height: 30px;
+}
+
 
 .summary-qty .notes a {
     text-decoration: none;
+    color: #6c757d !important;
+    cursor: pointer;    
+}
+
+.summary-qty .notes input {
+    width: 80%;
 }
 
 .summary-qty .disc {
