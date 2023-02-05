@@ -50,8 +50,6 @@ const Login = () => {
         }
     }
 
-console.log(alertData)
-
     return (
         <>
             <div className="loginContainer">

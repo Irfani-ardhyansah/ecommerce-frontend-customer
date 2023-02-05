@@ -188,7 +188,7 @@ const Product = () => {
             
             <div class="product-title d-flex align-items-center">
                 <h4>Category 1</h4>
-                <Link to="/product/all" class="product-title-link-all">Lihat semua</Link>
+                <Link to="/product/list" class="product-title-link-all">Lihat semua</Link>
 
                 {/* <a href="#" class="product-title-link-all">Lihat semua</a> */}
             </div>
@@ -198,11 +198,13 @@ const Product = () => {
                     (product.length > 0) && product.map((row, key) => {
                         return <>
                             <div class="card product-card">
-                                <img class="product-img" src={
-                                                        row.image 
-                                                            ? `${process.env.REACT_APP_DOMAIN}${row.image}?${new Date().getTime()}` 
-                                                            : `${process.env.REACT_APP_DOMAIN}/products/no_image.jpg?${new Date().getTime()}`
-                                                        } />
+                                <Link to="/product/detail" state={row}>
+                                    <img class="product-img" src={
+                                                            row.image 
+                                                                ? `${process.env.REACT_APP_DOMAIN}${row.image}?${new Date().getTime()}` 
+                                                                : `${process.env.REACT_APP_DOMAIN}/products/no_image.jpg?${new Date().getTime()}`
+                                                            } />
+                                </Link>
                                 <div class="product-card-body">
                                     <div class="product-card-description">
                                         <p>{row.name}</p>

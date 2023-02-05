@@ -24,10 +24,10 @@ const List = () => {
 
     return (<>
       <Navbar />
-        <div class="dashboard">
-            <div class="container">
+        <div className="dashboard">
+            <div className="container">
                 <div>
-                    <div class="product-title d-flex align-items-center">
+                    <div className="product-title d-flex align-items-center">
                         <h4>Category 1</h4>
                     </div>
                     <InfiniteScroll 
@@ -49,21 +49,21 @@ const List = () => {
                         (products.length > 0) && products.map((row, key) => {
                             console.log(row)
                             return <>
-                                <div class="card product-card me-2 mb-3">
-                                    <img src={product_1} class="product-img" />
-                                    <div class="product-card-body">
-                                        <div class="product-card-description">
+                                <div className="card product-card me-2 mb-3">
+                                    <img src={product_1} className="product-img" />
+                                    <div className="product-card-body">
+                                        <div className="product-card-description">
                                             <p>Product 1 ini</p>
-                                            <div class="productb-qty">
+                                            <div className="productb-qty">
                                                 50
                                             </div>
                                         </div>
-                                        <div class="product-card-price">
+                                        <div className="product-card-price">
                                             <h5>Rp. 100.000</h5>
                                         </div>
                                     </div>
-                                    <div class="product-card-footer">
-                                        <button class="btn btn-secondary btn-sm btn-cart" style={{width: '100%'}}>
+                                    <div className="product-card-footer">
+                                        <button className="btn btn-secondary btn-sm btn-cart" style={{width: '100%'}}>
                                             <MdShoppingCart />
                                         </button>
                                     </div>
@@ -72,21 +72,21 @@ const List = () => {
                         })
                     }
                     </InfiniteScroll>
-                    {/* <div class="card product-card me-2 mb-3">
-                        <img src={product_1} class="product-img" />
-                        <div class="product-card-body">
-                            <div class="product-card-description">
+                    {/* <div className="card product-card me-2 mb-3">
+                        <img src={product_1} className="product-img" />
+                        <div className="product-card-body">
+                            <div className="product-card-description">
                                 <p>Product 1 ini</p>
-                                <div class="product-qty">
+                                <div className="product-qty">
                                     50
                                 </div>
                             </div>
-                            <div class="product-card-price">
+                            <div className="product-card-price">
                                 <h5>Rp. 100.000</h5>
                             </div>
                         </div>
-                        <div class="product-card-footer">
-                            <button class="btn btn-secondary btn-sm btn-cart" style={{width: '100%'}}>
+                        <div className="product-card-footer">
+                            <button className="btn btn-secondary btn-sm btn-cart" style={{width: '100%'}}>
                                 <MdShoppingCart />
                             </button>
                         </div>

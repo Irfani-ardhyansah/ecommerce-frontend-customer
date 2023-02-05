@@ -1,0 +1,90 @@
+.product-detail-body .image {
+    flex: 0 0 33%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 10px;
+}
+
+.product-detail-body .summary-product {
+    flex: 0 0 33%;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 10px;
+}
+
+.product-detail-body .summary-qty {
+    flex: 0 0 33%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 10px;
+}
+
+.product-img-detail {
+    width: 17rem;
+    border-radius: 5px 5px 5px 5px;
+}
+
+.summary-product .title .sell-rating .sell p {
+    display: inline;
+    color: #685e5e;
+}
+
+.summary-product .title .sell-rating .divider {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.summary-product .title .sell-rating .rating p {
+    display: inline;
+    color: #685e5e;
+}
+
+.summary-product .title h3 {
+    margin-bottom: 0;
+}
+
+.summary-product .title .sell-rating .rating svg {
+    margin-top: -3px;
+    margin-right: 2px;
+    color: #f8a13d;
+}
+
+.summary-product .price {
+    margin-top: 1vh;
+}
+.summary-product .price h2 {
+    margin-bottom: 0;
+}
+
+.summary-product .price .disc {
+    text-decoration: line-through;
+}
+
+.summary-product .price .disc span{
+    margin-right: 3px;
+}
+
+.summary-product .description .body {
+    margin-top: 1vh;
+}
+
+.summary-qty .qty-stock .stock-detail {
+    margin-left: 1rem;
+}
+
+.summary-qty .notes a {
+    text-decoration: none;
+}
+
+.summary-qty .disc {
+    margin-top: 2vh;
+    text-align: right;
+    text-decoration: line-through;
+}
+
+
