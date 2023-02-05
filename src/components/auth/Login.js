@@ -24,7 +24,6 @@ const Login = () => {
         }
     }, [alertData])
 
-
     const sendData = async (e) => {
         // const dataLogin = {'email' : e.email, 'password' : e.pass}
         // const response = await axios.post(`${process.env.REACT_APP_DOMAIN}/api/login`, dataLogin)
@@ -57,7 +56,11 @@ const Login = () => {
                     {
                         statusAlert && 
                             <div className="alert alert-danger" role="alert">
-                                {alertData.alert.message}
+                            {
+                                alertData.alert 
+                                ? alertData.alert.message    
+                                : alertData.alert_exp.message
+                            }
                             </div>
                     }
                     <div className="loginTitle d-flex justify-content-between">

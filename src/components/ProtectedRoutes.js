@@ -13,9 +13,8 @@ const ProtectedRoute = () => {
 
         if(decoded.exp < dateNow.getTime() / 1000) {
             const alert_exp = { ...alert, name: { status: false, message: 'You\'r token is expired'} }
-            console.log(alert_exp)
-            localStorage.clear();
             return <Navigate to="/" state={{ alert_exp }} />
+            localStorage.clear();
         } else {
             return <Outlet />
         }
