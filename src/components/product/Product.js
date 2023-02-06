@@ -50,7 +50,7 @@ const Product = () => {
         headers: { Authorization: `Bearer ${dataLogin.token}`, 'Content-Type': 'multipart/form-data' }
     }
     const dispatch                          = useDispatch()
-    const [product, setProduct]             = useState([])
+    const [products, setProducts]             = useState([])
     const [inputQty, setInputQty]           = useState(null)
     const [qty, setQty]                     = useState(0)
     const [count, setCount]                 = useState(0)
@@ -136,9 +136,9 @@ const Product = () => {
     }
 
     const getProduct = async () => {
-        const result = await axios.get(`${process.env.REACT_APP_DOMAIN}/api/product`, config)
+        const result = await axios.get(`${process.env.REACT_APP_DOMAIN}/api/product/all`, config)
         if(result.data.status == 200) {
-            setProduct(result.data.data)
+            setProducts(result.data.data)
         }
     }
 
@@ -182,75 +182,87 @@ const Product = () => {
         }
     }
 
-    return (
-        <div style={{marginBottom: '3vh'}}>
-            <hr class="product-divider-top"></hr>
-            
-            <div class="product-title d-flex align-items-center">
-                <h4>Category 1</h4>
-                <Link to="/product/list" class="product-title-link-all">Lihat semua</Link>
 
-                {/* <a href="#" class="product-title-link-all">Lihat semua</a> */}
-            </div>
-
-            <Slider {...settings}>
-                {
-                    (product.length > 0) && product.map((row, key) => {
-                        return <>
-                            <div class="card product-card">
-                                <Link to="/product/detail" state={row}>
-                                    <img class="product-img" src={
-                                                            row.image 
-                                                                ? `${process.env.REACT_APP_DOMAIN}${row.image}?${new Date().getTime()}` 
-                                                                : `${process.env.REACT_APP_DOMAIN}/products/no_image.jpg?${new Date().getTime()}`
-                                                            } />
-                                </Link>
-                                <div class="product-card-body">
-                                    <div class="product-card-description">
-                                        <p>{row.name}</p>
-                                        <div class="product-qty">
-                                            {row.stock}
+    return (<>
+            {
+                (Object.keys(products).length > 0) && Object.keys(products).map((category, index) => {
+                    return <>
+                    <div style={{marginBottom: '3vh'}} key={index}>
+                        <hr class="product-divider-top"></hr>
+                        
+                        <div class="product-title d-flex align-items-center">
+                            <h4>{category}</h4>
+                            <Link to="/product/list" class="product-title-link-all" state={{data: {name: category, id: products[category][0].category_id}}}>Lihat semua</Link>
+                        </div>
+        
+                        <Slider {...settings}>
+                            {
+                                (products[category].length > 0) && products[category].map((row, key) => {
+                                    return <>
+                                        <div class="card product-card">
+                                            <Link to="/product/detail" state={row}>
+                                                <img class="product-img" src={
+                                                                        row.image 
+                                                                            ? `${process.env.REACT_APP_DOMAIN}${row.image}?${new Date().getTime()}` 
+                                                                            : `${process.env.REACT_APP_DOMAIN}/products/no_image.jpg?${new Date().getTime()}`
+                                                                        } />
+                                            </Link>
+                                            <div class="product-card-body">
+                                                <div class="product-card-description">
+                                                    <p>
+                                                        {
+                                                            row.name.length > 20 ? 
+                                                            `${row.name.substring(0, 20)}...` :
+                                                            row.name
+                                                        }
+                                                    </p>
+                                                    <div class="product-qty">
+                                                        {row.stock}
+                                                    </div>
+                                                </div>
+                                                <div class="product-card-price d-flex justify-content-between align-items-center">
+                                                    <h5>
+                                                        {
+                                                            row.discount == null 
+                                                            ? `Rp. ${priceSplitter(row.price)}`
+                                                            : <span style={{textDecoration:'line-through'}}>Rp. {priceSplitter(row.price)}</span>
+                                                        }
+                                                    </h5>
+                                                    {row.discount && (
+                                                        <h6><span style={{color: 'red'}}>Rp. {priceSplitter(row.discount.price)}</span></h6>
+                                                    )}
+                                                </div>
+                                            </div>
+                                            <div class="product-card-footer">
+                                                {
+                                                    (inputQty !== key) 
+                                                    ? 
+                                                    <button class="btn btn-secondary btn-sm btn-cart" onClick={() => handleQty(key, row)} style={{width: '100%'}}>
+                                                        <MdShoppingCart />
+                                                        {(row.carts.length > 0) && row.carts[0].qty}
+                                                    </button> 
+                                                    : 
+                                                    <div className="qty-control d-flex justify-content-center" ref={refOne}>                                        
+                                                        <a onClick={handleDecrementQty}>
+                                                            <AiOutlineMinusCircle className="btn-minus" />
+                                                        </a>
+                                                        <input type="number" readOnly className="form-qty-control" style={{width: '2rem', textAlign: 'center'}} value={qty} onChange={(e) => handleKeyDownQty(e)}/>
+                                                        <a onClick={handleIncrementQty}>
+                                                            <AiOutlinePlusCircle className="btn-plus"/>
+                                                        </a>
+                                                    </div> 
+                                                }
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="product-card-price d-flex justify-content-between align-items-center">
-                                        <h5>
-                                            {
-                                                row.discount == null 
-                                                ? `Rp. ${priceSplitter(row.price)}`
-                                                : <span style={{textDecoration:'line-through'}}>Rp. {priceSplitter(row.price)}</span>
-                                            }
-                                        </h5>
-                                        {row.discount && (
-                                            <h6><span style={{color: 'red'}}>Rp. {priceSplitter(row.discount.price)}</span></h6>
-                                        )}
-                                    </div>
-                                </div>
-                                <div class="product-card-footer">
-                                    {
-                                        (inputQty !== key) 
-                                        ? 
-                                        <button class="btn btn-secondary btn-sm btn-cart" onClick={() => handleQty(key, row)} style={{width: '100%'}}>
-                                            <MdShoppingCart />
-                                            {(row.carts.length > 0) && row.carts[0].qty}
-                                        </button> 
-                                        : 
-                                        <div className="qty-control d-flex justify-content-center" ref={refOne}>                                        
-                                            <a onClick={handleDecrementQty}>
-                                                <AiOutlineMinusCircle className="btn-minus" />
-                                            </a>
-                                            <input type="number" readOnly className="form-qty-control" style={{width: '2rem', textAlign: 'center'}} value={qty} onChange={(e) => handleKeyDownQty(e)}/>
-                                            <a onClick={handleIncrementQty}>
-                                                <AiOutlinePlusCircle className="btn-plus"/>
-                                            </a>
-                                        </div> 
-                                    }
-                                </div>
-                            </div>
-                        </>
-                    })
-                }
-            </Slider>
-        </div>
+                                    </>
+                                })
+                            }
+                        </Slider>
+                    </div>
+                </>
+                }) 
+            }
+        </>
     )
 }
 
