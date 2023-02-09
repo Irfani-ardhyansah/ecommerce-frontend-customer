@@ -69,7 +69,7 @@ const Detail = () => {
                             {
                                 product.discount != null &&
                                 <div className="disc">
-                                    <span class='badge bg-danger'> 10% </span>                         
+                                    <span class='badge bg-danger'> {product.discount.percent}% </span>                         
                                     Rp. {priceSplitter(product.price)}
                                 </div>
                             }
