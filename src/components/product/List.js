@@ -84,6 +84,7 @@ const List = () => {
                     <div className="product-title d-flex align-items-center">
                         <h4>{category.data.name}</h4>
                     </div>
+                    {/* coba pakai ul li https://codepen.io/mahmudulhrabby/pen/GGqdvr */}
                     {
                         products.data.length > 0 &&
                             <InfiniteScroll 

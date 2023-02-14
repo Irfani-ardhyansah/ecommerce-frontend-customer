@@ -5,6 +5,9 @@ import './Detail.css'
 import product_1 from '../../img/5.jpg'
 import { HiMinus, HiPlus, HiPencil, HiStar } from "react-icons/hi2"
 import {priceSplitter} from '../../Helper'
+import axios from 'axios'
+import {useDispatch} from 'react-redux'
+import {increment} from '../../actions'
 
 const Detail = () => {
     const { state }     = useLocation()
@@ -12,6 +15,21 @@ const Detail = () => {
     const [statusNotes, setStatusNotes] = useState(false)
     const [qty, setQty] = useState(1)
     const [subTotal, setSubTotal] = useState(0)
+    const [cartStatus, setCartStatus]       = useState(false)
+    const [btnBeliStatus, setBtnBeliStatus] = useState(false)
+    const dataLogin                         = JSON.parse(localStorage.getItem('dataLogin'))
+    const config                            = {
+        headers: { Authorization: `Bearer ${dataLogin.token}`, 'Content-Type': 'multipart/form-data' }
+    }
+    const dispatch                          = useDispatch()
+
+    useEffect(() => {
+        let carts = product.carts 
+        if(carts.length > 0) {
+            setCartStatus(!cartStatus);
+            setQty(product.carts[0].qty)
+        } 
+    }, [])
 
     useEffect(() => {
         if(product.discount != null) {
@@ -20,6 +38,16 @@ const Detail = () => {
         } else {
             const total = product.price * qty
             setSubTotal(total)
+        }
+
+        if(cartStatus === true) {
+            if(product.carts[0].qty === qty) {
+                console.log('if')
+                setBtnBeliStatus(true)
+            } else {
+                console.log('else')
+                setBtnBeliStatus(false)
+            }
         }
     }, [qty])
 
@@ -30,6 +58,30 @@ const Detail = () => {
     const handleDecrementQty = async() => {
         if(qty > 0) {
             setQty(qty - 1)
+        }
+    }
+
+    const handleBtnBeli = async() => {
+        const formData = new FormData()   
+        formData.append("product_id", product.id)
+        formData.append("qty", qty)
+        
+        const result = await axios({
+            method: "POST",
+            url: `${process.env.REACT_APP_DOMAIN}/api/cart`,
+            data: formData,
+            headers: config.headers,
+        })
+
+        let response = result.data
+
+        if(response.status == 200) {
+            if(response.data.status == 'created') {
+                dispatch(increment(1))
+            }
+
+        } else {
+            console.log(result)
         }
     }
 
@@ -128,7 +180,7 @@ const Detail = () => {
                                 <p>Subtotal</p>
                                 <h5 className="price">Rp. {priceSplitter(subTotal)}</h5>
                             </div>
-                            <button className="btn btn-secondary" >Beli</button>
+                            <button onClick={handleBtnBeli} disabled={btnBeliStatus} className="btn btn-secondary" >Beli</button>
                         </div>
                     </div>
                 </div>
