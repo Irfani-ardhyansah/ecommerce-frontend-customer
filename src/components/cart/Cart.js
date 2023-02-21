@@ -193,7 +193,7 @@ const Cart = () => {
 
             <div className="cart">
                 <div className="container">
-                    <h5>Keranjang</h5>
+                    <h4>Keranjang</h4>
                     <div className="form-cart">
                         <input type="checkbox" onChange={(event) => handleCheckedAll(event)} />
                         <label className="label-all">Pilih Semua</label>
@@ -236,7 +236,7 @@ const Cart = () => {
                             })
                     }
                 </div>
-                <div className="container">
+                <div className="container divider">
                 </div>
                 <div className="container card-price">
                     <div className="card p-3 mb-5 bg-white rounded">
@@ -246,7 +246,7 @@ const Cart = () => {
                             <p>Rp. {priceSplitter(summary.total_price)}</p>
                         </div>  
                         <hr style={{marginTop: '0'}} />
-                        <button className="btn btn-secondary" disabled={summary.qty == 0 && true}>Beli</button>
+                        <button className="btn btn-secondary" disabled={summary.qty == 0 && true}>Checkout</button>
                     </div>
                 </div>
             </div>

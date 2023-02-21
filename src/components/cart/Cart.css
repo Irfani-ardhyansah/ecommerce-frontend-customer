@@ -8,7 +8,12 @@
 }
 
 .cart .container {
-    width: auto;
+    width: 40rem;
+    margin-right: 10rem;
+}
+
+.cart .divider {
+    width: 10rem;
 }
 
 .form-cart input {
