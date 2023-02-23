@@ -8,6 +8,7 @@ import axios from 'axios'
 import {priceSplitter} from '../../Helper'
 import {useDispatch} from 'react-redux'
 import {increment, decrement} from '../../actions'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 
 const Cart = () => {
     const dataLogin                         = JSON.parse(localStorage.getItem('dataLogin'))
@@ -24,8 +25,22 @@ const Cart = () => {
     const [cartId, setCartId]               = useState(null)
     const [selected, setSelected]           = useState([])
     const [summary, setSummary]             = useState({
-        qty: 0, total_price: 0
-    })  
+                                                qty: 0, total_price: 0
+                                            })  
+    let dataCheckout = {
+        'cart': [{        
+            id: null,
+            qty: null,
+            price: null,
+            totalPrice: null,
+            isDiscount: null}],
+        'payment': {
+            'method':  null,
+            'total_price': null
+        }
+    }
+
+    const [cartCheckout, setCartCheckout]   = useState(dataCheckout)
 
     useEffect(() => {
         getCart()
@@ -59,7 +74,6 @@ const Cart = () => {
         getCart()
     }, [reload])
 
-
     useEffect(() => {
         let summaryTotalPrice = selected.reduce((prev, current) => {
             return prev + +current.total_price
@@ -67,6 +81,17 @@ const Cart = () => {
         let summaryQty = selected.length
         setSummary({qty: summaryQty, total_price: summaryTotalPrice})
     }, [selected])
+
+    useEffect(() => {
+        let dataCheckout = {
+            'cart': carts.filter(e => e.selected === true).map(({id, qty, price, total_price, is_discount}) => ({id, qty, price, total_price, is_discount})),
+            'payment': {
+                'method':  null,
+                'total_price': summary.total_price
+            }
+        }
+        setCartCheckout(dataCheckout)
+    }, [summary])
 
     const sendApiDelete = async (id = null) => {
         let cartIdDelete = id ? id : cartId
@@ -186,6 +211,17 @@ const Cart = () => {
             )
         );
     }
+
+    const checkoutBtn = () => {
+        let dataCheckout = {
+            'cart': carts.filter(e => e.selected === true).map(({id, qty, price, total_price, is_discount}) => ({id, qty, price, total_price, is_discount})),
+            'payment': {
+                'method':  null,
+                'total_price': summary.total_price
+            }
+        }
+        setCartCheckout(dataCheckout)
+    }
     
     return (
         <>
@@ -246,7 +282,8 @@ const Cart = () => {
                             <p>Rp. {priceSplitter(summary.total_price)}</p>
                         </div>  
                         <hr style={{marginTop: '0'}} />
-                        <button className="btn btn-secondary" disabled={summary.qty == 0 && true}>Checkout</button>
+                        <Link to="/checkout" state={{cartCheckout}} className="btn btn-secondary" disabled={summary.qty == 0 && true}>Checkout</Link>
+                        {/* <button onClick={checkoutBtn} className="btn btn-secondary" disabled={summary.qty == 0 && true}>Checkout</button> */}
                     </div>
                 </div>
             </div>

@@ -2,8 +2,17 @@ import './Checkout.css'
 import Navbar from '../Navbar'
 import { DiReact } from "react-icons/di";
 import product_1 from '../../img/Product-1.png'
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from 'react-router-dom'
+import {priceSplitter} from '../../Helper'
 
 const Checkout = () => {
+    const { state }             = useLocation()
+    const [dataProps]        = useState(state)
+
+    useEffect(() => {
+        console.log(dataProps.cartCheckout)
+    }, [])
     return (
         <>
             <Navbar checkout={true}/>
@@ -14,7 +23,7 @@ const Checkout = () => {
                     <div className="address">
                         <b>Alamat Pengiriman</b>
                         <hr />
-                        <p><b>Irfani Ardhyansah</b>( Rumah )</p>
+                        <p><b>Irfani Ardhyansah</b> ( Rumah )</p>
                         <p>6281237124</p>
                         <p>Ds bukur Rt1 Rw1 Jiwan, Kab. Madiun, 63161</p>
                     </div>
@@ -51,8 +60,8 @@ const Checkout = () => {
                     <div className="card p-3 mb-5 bg-white rounded">
                         <h5>Ringkasan Belanja</h5>
                         <div className="d-flex justify-content-between">
-                            <p>Total harga (1 Barang)</p>
-                            <p>Rp. 10.000</p>
+                            <p>Total harga ({dataProps.cartCheckout.cart.length} Barang)</p>
+                            <p>Rp. {priceSplitter(dataProps.cartCheckout.payment.total_price)}</p>
                         </div>  
                         <hr style={{marginTop: '0'}} />
                         <button className="btn btn-secondary">Order</button>
