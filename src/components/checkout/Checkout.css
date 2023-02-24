@@ -40,6 +40,12 @@
     vertical-align: 0 !important;
 }
 
+
+.checkout .container .product-section .list .product {
+    margin-bottom: 3vh;
+    
+}
+
 .checkout .container .product-section .list .product > img {
         width: 7rem;
     border-radius: 5px 5px 0 0;

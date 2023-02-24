@@ -27,20 +27,20 @@ const Cart = () => {
     const [summary, setSummary]             = useState({
                                                 qty: 0, total_price: 0
                                             })  
-    let dataCheckout = {
-        'cart': [{        
-            id: null,
-            qty: null,
-            price: null,
-            totalPrice: null,
-            isDiscount: null}],
-        'payment': {
-            'method':  null,
-            'total_price': null
-        }
-    }
+    // let dataCheckout = {
+    //     'cart': [{        
+    //         id: null,
+    //         qty: null,
+    //         price: null,
+    //         totalPrice: null,
+    //         isDiscount: null}],
+    //     'payment': {
+    //         'method':  null,
+    //         'total_price': null
+    //     }
+    // }
 
-    const [cartCheckout, setCartCheckout]   = useState(dataCheckout)
+    const [cartCheckout, setCartCheckout]   = useState([])
 
     useEffect(() => {
         getCart()
@@ -84,7 +84,8 @@ const Cart = () => {
 
     useEffect(() => {
         let dataCheckout = {
-            'cart': carts.filter(e => e.selected === true).map(({id, qty, price, total_price, is_discount}) => ({id, qty, price, total_price, is_discount})),
+            // 'cart': carts.filter(e => e.selected === true).map(({id, qty, price, total_price, is_discount}) => ({id, qty, price, total_price, is_discount})),
+            'carts': carts.filter(e => e.selected === true),
             'payment': {
                 'method':  null,
                 'total_price': summary.total_price
@@ -214,7 +215,8 @@ const Cart = () => {
 
     const checkoutBtn = () => {
         let dataCheckout = {
-            'cart': carts.filter(e => e.selected === true).map(({id, qty, price, total_price, is_discount}) => ({id, qty, price, total_price, is_discount})),
+            // 'cart': carts.filter(e => e.selected === true).map(({id, qty, price, total_price, is_discount}) => ({id, qty, price, total_price, is_discount})),
+            'cart': carts.filter(e => e.selected === true),
             'payment': {
                 'method':  null,
                 'total_price': summary.total_price
