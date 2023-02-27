@@ -1,6 +1,5 @@
 import './Cart.css'
 import Navbar from '../Navbar'
-import product_1 from '../../img/5.jpg'
 import { MdOutlineRemoveShoppingCart } from "react-icons/md";
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai";
 import { useState, useEffect, useRef } from "react"

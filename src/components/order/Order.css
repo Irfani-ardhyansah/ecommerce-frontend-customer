@@ -1,0 +1,114 @@
+.order {
+    padding-top: 5vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #eaeaea;
+    min-height: 100vh;
+}
+
+.orderHeader {
+    margin-left: 9rem;
+}
+
+.orderCard { 
+    background-color: whitesmoke;
+    width: 75%;
+    height: auto !important;
+}
+
+.orderBody {
+    padding-top: 6vh;
+    padding-right: 4%;
+    padding-left: 4%;
+    padding-bottom: 3vh;
+}
+
+.orderFilter>.form-group {
+    margin-right: 1rem;
+}
+
+.orderFilter>.search {
+    width: 50%;
+}
+
+.orderFilter>.category {
+    width: 25%;
+}   
+
+.orderFilter>.date {
+    width: 25%;
+}   
+
+.orderStatus {
+    margin-top: 4vh;
+}
+
+.orderStatus .statusBtn {
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 15px;
+    margin-left: 4vh;
+}
+
+.orderStatus .statusBtn:hover {
+    background: #f5f5f5;
+}
+
+.orderStatus .statusBtn.active {
+    background: #eaeaea;
+}
+
+.orderStatus .reset {
+    margin-left: 4vh;
+    cursor: pointer;
+    color: #8f8d8d;
+}
+
+.orderStatus .reset:hover {
+    color: #616060;
+} 
+
+.orderItem {
+    margin-top: 4vh;
+    padding: 15px;
+}
+
+.orderItem .header .invoice {
+    color: #777777;
+}
+
+.orderItem .header .status.card {
+    background: #ace0ae;
+    color: #2a642c;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    height: 90%;
+    padding-right: 10px;
+    padding-left: 10px;
+    border: none;
+}
+
+.orderItem .body {
+    padding-top: 1vh;
+    padding-bottom: 3vh;
+}
+
+.orderItem .body .product>img {
+    height: 60px;
+    margin-right: 0.5rem;
+}
+
+.orderItem .body .product .name>p {
+    font-size: 15px;
+    color: #777777;
+}   
+
+.orderItem .body .price>div {
+    font-size: 15px;
+    color: #777777;
+}   
+
+.orderItem .footer .detail {
+    cursor: pointer;
+    color: #8f8d8d;
+}
