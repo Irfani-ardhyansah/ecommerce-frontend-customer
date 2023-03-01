@@ -112,3 +112,40 @@
     cursor: pointer;
     color: #8f8d8d;
 }
+
+.orderItemModal {
+    margin-top: 1vh;
+    padding: 15px;
+}
+
+.orderItemModal .body {
+    padding-top: 1vh;
+    padding-bottom: 3vh;
+}
+
+.orderItemModal .body .product>img {
+    height: 60px;
+    margin-right: 0.5rem;
+}
+
+.orderItemModal .body .product .name>p {
+    font-size: 15px;
+    color: #777777;
+}   
+
+.orderItemModal .body .price>div {
+    font-size: 15px;
+    color: #777777;
+}   
+
+.modal-dialog.modal-order,
+.modal-content.modal-order {
+    /* 80% of window height */
+    height: 90%;
+}
+
+.modal-body.modal-order {
+    /* 100% = dialog height, 120px = header + footer */
+    max-height: calc(100% - 120px);
+    overflow-y: scroll;
+}

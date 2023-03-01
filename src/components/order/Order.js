@@ -3,6 +3,7 @@ import Navbar from '../Navbar'
 import { useState, useEffect, useRef } from "react"
 import axios from 'axios'
 import product_1 from '../../img/Product-1.png'
+import OrderModal from './OrderModal'
 
 const Order = () => {
     return (
@@ -74,7 +75,7 @@ const Order = () => {
                                         </div>
                                     </div>
                                     <div className="footer d-flex justify-content-end align-items-center">
-                                        <div className="detail">
+                                        <div className="detail"  data-bs-toggle="modal" data-bs-target="#exampleModal">
                                             Lihat Detail Transaksi
                                         </div>
                                     </div>
@@ -84,6 +85,7 @@ const Order = () => {
                     </div>
                 </div>
             </div>
+            <OrderModal />
         </>
     )
 }
